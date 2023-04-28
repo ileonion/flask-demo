@@ -28,24 +28,24 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v1.10.0
         with:
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
           logout: true
 
       # Runs a set of commands using the runners shell
       - name: build image
         run: |
           make image
-          docker tag flask-demo:latest ${{ secrets.USERNAME }}/flask-demo:${{ github.sha }}
-          docker push ${{ secrets.USERNAME }}/flask-demo:${{ github.sha }}
+          docker tag flask-demo:latest ${{ secrets.DOCKER_USER }}/flask-demo:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USER }}/flask-demo:${{ github.sha }}
 
       - name: Trigger CI
         uses: InformaticsMatters/trigger-ci-action@1.0.1
         with:
-          ci-owner: pyfs
+          ci-owner: ileonion
           ci-repository: flask-demo-kustomize
           ci-ref: refs/heads/master
-          ci-user: pyfs
+          ci-user: ileonion
           ci-user-token: ${{ secrets.CI_TOKEN }}
           ci-name: CI
           ci-inputs: >-
